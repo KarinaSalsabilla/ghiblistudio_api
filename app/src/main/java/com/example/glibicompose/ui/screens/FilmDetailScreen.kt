@@ -188,7 +188,7 @@ fun FilmDetailScreen(
 
                     // Synopsis
                     Text(
-                        text = "Sinopsis",
+                        text = "Synopsis",
                         fontSize = 22.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFF003153)
