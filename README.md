@@ -1,0 +1,1 @@
+# ghiblistudio_api
