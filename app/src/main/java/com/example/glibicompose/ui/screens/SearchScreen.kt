@@ -8,11 +8,14 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -22,13 +25,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.glibicompose.data.GhibliFilm
-import com.example.glibicompose.ui.components.FilmCard
 import com.example.glibicompose.ui.theme.GlibiComposeTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import java.net.URL
+
+// Color Theme
+private val PrimaryBlue = Color(0xFF1E3A8A)
+private val SecondaryBlue = Color(0xAD75A7FC)
+private val AccentGold = Color(0xFFFFB800)
+private val CardWhite = Color(0xFFFFFFFF)
+private val TextPrimary = Color(0xFF1E293B)
+private val TextSecondary = Color(0xFF64748B)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -94,18 +104,34 @@ fun SearchScreen() {
     } else {
         Scaffold(
             topBar = {
-                TopAppBar(
-                    title = {
-                        Text(
-                            "Studio Ghibli Films",
-                            fontWeight = FontWeight.Bold
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(
+                            Brush.horizontalGradient(
+                                colors = listOf(PrimaryBlue, SecondaryBlue)
+                            )
                         )
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = Color(0xFF003153),
-                        titleContentColor = Color.White
-                    )
-                )
+                        .statusBarsPadding() // Handle status bar
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp, vertical = 24.dp)
+                    ) {
+                        Text(
+                            text = "Studio Ghibli",
+                            fontSize = 28.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                        Text(
+                            text = "Explore magical animated films",
+                            fontSize = 14.sp,
+                            color = Color.White.copy(alpha = 0.9f)
+                        )
+                    }
+                }
             }
         ) { padding ->
             Column(
@@ -113,26 +139,56 @@ fun SearchScreen() {
                     .fillMaxSize()
                     .padding(padding)
             ) {
-                // Search Bar
-                OutlinedTextField(
-                    value = searchQuery,
-                    onValueChange = { searchQuery = it },
+                // Search Bar - Elevated Design
+                Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp),
-                    placeholder = { Text("Cari film atau director...") },
-                    leadingIcon = {
-                        Icon(Icons.Default.Search, contentDescription = null)
-                    },
-                    shape = RoundedCornerShape(12.dp),
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = Color.White,
-                        unfocusedContainerColor = Color.White,
-                        focusedIndicatorColor = Color(0xFF003153),
-                        unfocusedIndicatorColor = Color.Gray
-                    ),
-                    singleLine = true
-                )
+                        .padding(horizontal = 20.dp, vertical = 16.dp)
+                        .shadow(8.dp, RoundedCornerShape(16.dp)),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = CardWhite)
+                ) {
+                    OutlinedTextField(
+                        value = searchQuery,
+                        onValueChange = { searchQuery = it },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(4.dp),
+                        placeholder = {
+                            Text(
+                                "Search films, directors...",
+                                color = TextSecondary
+                            )
+                        },
+                        leadingIcon = {
+                            Icon(
+                                Icons.Default.Search,
+                                contentDescription = null,
+                                tint = SecondaryBlue
+                            )
+                        },
+                        shape = RoundedCornerShape(12.dp),
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent,
+                            cursorColor = SecondaryBlue
+                        ),
+                        singleLine = true
+                    )
+                }
+
+                // Results Count
+                if (filteredFilms.isNotEmpty() && !isLoading) {
+                    Text(
+                        text = "${filteredFilms.size} films found",
+                        fontSize = 14.sp,
+                        color = TextSecondary,
+                        fontWeight = FontWeight.Medium,
+                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)
+                    )
+                }
 
                 // Content
                 when {
@@ -141,7 +197,20 @@ fun SearchScreen() {
                             modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center
                         ) {
-                            CircularProgressIndicator(color = Color(0xFF003153))
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                CircularProgressIndicator(
+                                    color = SecondaryBlue,
+                                    strokeWidth = 3.dp
+                                )
+                                Spacer(modifier = Modifier.height(16.dp))
+                                Text(
+                                    text = "Loading magical films...",
+                                    color = TextSecondary,
+                                    fontSize = 14.sp
+                                )
+                            }
                         }
                     }
                     errorMessage != null -> {
@@ -149,11 +218,20 @@ fun SearchScreen() {
                             modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text(
-                                text = errorMessage ?: "",
-                                color = Color.Red,
-                                modifier = Modifier.padding(16.dp)
-                            )
+                            Card(
+                                modifier = Modifier.padding(20.dp),
+                                colors = CardDefaults.cardColors(
+                                    containerColor = Color(0xFFFEE2E2)
+                                ),
+                                shape = RoundedCornerShape(12.dp)
+                            ) {
+                                Text(
+                                    text = errorMessage ?: "",
+                                    color = Color(0xFFDC2626),
+                                    modifier = Modifier.padding(16.dp),
+                                    fontSize = 14.sp
+                                )
+                            }
                         }
                     }
                     filteredFilms.isEmpty() -> {
@@ -161,24 +239,43 @@ fun SearchScreen() {
                             modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text(
-                                text = if (searchQuery.isEmpty()) "Tidak ada film"
-                                else "Tidak ditemukan hasil untuk \"$searchQuery\"",
-                                color = Color.Gray
-                            )
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(
+                                    text = "🎬",
+                                    fontSize = 48.sp
+                                )
+                                Spacer(modifier = Modifier.height(12.dp))
+                                Text(
+                                    text = if (searchQuery.isEmpty()) "No films available"
+                                    else "No results for \"$searchQuery\"",
+                                    color = TextSecondary,
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.Medium
+                                )
+                            }
                         }
                     }
                     else -> {
                         LazyColumn(
                             modifier = Modifier.fillMaxSize(),
-                            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                            contentPadding = PaddingValues(
+                                start = 20.dp,
+                                end = 20.dp,
+                                top = 8.dp,
+                                bottom = 8.dp + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+                            ),
+                            verticalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
                             items(filteredFilms) { film ->
-                                FilmCard(
+                                ProfessionalFilmCard(
                                     film = film,
                                     onClick = { selectedFilm = film }
                                 )
+                            }
+                            item {
+                                Spacer(modifier = Modifier.height(8.dp))
                             }
                         }
                     }
@@ -189,31 +286,65 @@ fun SearchScreen() {
 }
 
 @Composable
-fun FilmCard(film: GhibliFilm, onClick: () -> Unit = {}) {
+fun ProfessionalFilmCard(film: GhibliFilm, onClick: () -> Unit = {}) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
+            .shadow(6.dp, RoundedCornerShape(16.dp))
             .clickable { onClick() },
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = CardWhite)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(12.dp)
         ) {
-            // Film Image
-            AsyncImage(
-                model = film.image,
-                contentDescription = film.title,
+            // Film Image with Overlay
+            Box(
                 modifier = Modifier
-                    .size(100.dp)
-                    .clip(RoundedCornerShape(8.dp)),
-                contentScale = ContentScale.Crop
-            )
+                    .size(110.dp, 140.dp)
+                    .clip(RoundedCornerShape(12.dp))
+            ) {
+                AsyncImage(
+                    model = film.image,
+                    contentDescription = film.title,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
 
-            Spacer(modifier = Modifier.width(12.dp))
+                // Rating Badge
+                if (film.rtScore.isNotEmpty()) {
+                    Surface(
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(6.dp),
+                        shape = RoundedCornerShape(8.dp),
+                        color = AccentGold
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                Icons.Default.Star,
+                                contentDescription = null,
+                                modifier = Modifier.size(12.dp),
+                                tint = Color.White
+                            )
+                            Spacer(modifier = Modifier.width(2.dp))
+                            Text(
+                                text = film.rtScore,
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White
+                            )
+                        }
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.width(14.dp))
 
             // Film Info
             Column(
@@ -225,46 +356,80 @@ fun FilmCard(film: GhibliFilm, onClick: () -> Unit = {}) {
                     text = film.title,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFF003153),
+                    color = TextPrimary,
                     maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+                    lineHeight = 22.sp
                 )
 
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
                     text = film.originalTitle,
-                    fontSize = 14.sp,
-                    color = Color.Gray,
+                    fontSize = 13.sp,
+                    color = TextSecondary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
+                // Director Info with Icon
                 Row(
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(6.dp))
+                        .background(SecondaryBlue.copy(alpha = 0.1f))
+                        .padding(horizontal = 8.dp, vertical = 4.dp)
                 ) {
                     Text(
-                        text = "Director: ",
-                        fontSize = 12.sp,
-                        color = Color.Gray
+                        text = "🎬",
+                        fontSize = 12.sp
                     )
+                    Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         text = film.director,
                         fontSize = 12.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = Color(0xFF0066CC)
+                        fontWeight = FontWeight.SemiBold,
+                        color = SecondaryBlue
                     )
                 }
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
-                Text(
-                    text = "Release: ${film.releaseDate}",
-                    fontSize = 12.sp,
-                    color = Color.Gray
-                )
+                // Release Date and Runtime
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Surface(
+                        shape = RoundedCornerShape(4.dp),
+                        color = SecondaryBlue.copy(alpha = 0.1f)
+                    ) {
+                        Text(
+                            text = film.releaseDate,
+                            fontSize = 11.sp,
+                            color = TextSecondary,
+                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+
+                    if (film.runningTime.isNotEmpty()) {
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = "•",
+                            fontSize = 11.sp,
+                            color = TextSecondary
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = "${film.runningTime} min",
+                            fontSize = 11.sp,
+                            color = TextSecondary,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+                }
             }
         }
     }
@@ -280,18 +445,27 @@ fun SearchScreenPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun FilmCardPreview() {
+fun ProfessionalFilmCardPreview() {
     GlibiComposeTheme {
-        FilmCard(
-            GhibliFilm(
-                id = "1",
-                title = "Spirited Away",
-                originalTitle = "千と千尋の神隠し",
-                description = "A young girl enters a world of spirits and must work to free her parents.",
-                director = "Hayao Miyazaki",
-                releaseDate = "2001",
-                image = ""
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(20.dp)
+        ) {
+            ProfessionalFilmCard(
+                GhibliFilm(
+                    id = "1",
+                    title = "Spirited Away",
+                    originalTitle = "千と千尋の神隠し",
+                    description = "A young girl enters a world of spirits and must work to free her parents.",
+                    director = "Hayao Miyazaki",
+                    releaseDate = "2001",
+                    image = "",
+                    movieBanner = "",
+                    runningTime = "125",
+                    rtScore = "97"
+                )
             )
-        )
+        }
     }
 }

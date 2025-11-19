@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -36,10 +37,11 @@ fun FilmDetailScreen(
     film: GhibliFilm,
     onBackClick: () -> Unit
 ) {
-    var showCharactersDialog by remember { mutableStateOf(false) }
-    var characters by remember { mutableStateOf<List<GhibliCharacter>>(emptyList()) }
-    var isLoadingCharacters by remember { mutableStateOf(false) }
-    var errorMessage by remember { mutableStateOf<String?>(null) }
+    var showCharactersDialog by rememberSaveable { mutableStateOf(false) }
+    var characters by rememberSaveable { mutableStateOf<List<GhibliCharacter>>(emptyList()) }
+    var isLoadingCharacters by rememberSaveable { mutableStateOf(false) }
+    var errorMessage by rememberSaveable { mutableStateOf<String?>(null) }
+
 
     val scope = rememberCoroutineScope()
 
