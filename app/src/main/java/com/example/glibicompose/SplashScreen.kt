@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -117,7 +118,7 @@ fun SplashScreen(onNavigateToSearch: () -> Unit) {
             // Title Section
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = "STUDIO GHIBLI",
+                    text = stringResource(R.string.studio_ghibli),
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
@@ -134,7 +135,7 @@ fun SplashScreen(onNavigateToSearch: () -> Unit) {
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "Setiap Karya, Penuh Keajaiban",
+                    text = stringResource(R.string.tagline),
                     fontSize = 16.sp,
                     color = Color.White.copy(alpha = 0.9f),
                     fontFamily = FontFamily.Serif,
@@ -193,7 +194,7 @@ fun SplashScreen(onNavigateToSearch: () -> Unit) {
                         ) {
                             AsyncImage(
                                 model = filmCover,
-                                contentDescription = "Ghibli Film Cover",
+                                contentDescription = stringResource(R.string.film_cover),
                                 modifier = Modifier
                                     .fillMaxSize()
                                     .clip(RoundedCornerShape(24.dp))
@@ -231,14 +232,14 @@ fun SplashScreen(onNavigateToSearch: () -> Unit) {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     AnimatedButton(
-                        text = "Mulai Petualangan",
+                        text = stringResource(R.string.start_adventure),
                         onClick = onNavigateToSearch
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Text(
-                        text = "Jelajahi koleksi film Studio Ghibli",
+                        text = stringResource(R.string.explore_collection),
                         fontSize = 13.sp,
                         color = Color.White.copy(alpha = 0.7f),
                         textAlign = TextAlign.Center

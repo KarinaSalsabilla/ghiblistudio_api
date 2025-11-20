@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">glibi compose</string>
+    <string name="studio_ghibli">STUDIO GHIBLI</string>
+    <string name="tagline">Every Work, Full of Magic</string>
+    <string name="start_adventure">Start Adventure</string>
+    <string name="explore_collection">Explore Studio Ghibli film collection</string>
+    <string name="film_cover">Ghibli Film Cover</string>
+</resources>
