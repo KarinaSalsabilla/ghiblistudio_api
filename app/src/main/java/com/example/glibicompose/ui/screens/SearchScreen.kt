@@ -96,16 +96,16 @@ fun SearchScreen(
         }
     }
 
-    // Filter films based on search query
+    // Filter films based on search query - HANYA HURUF DEPAN
     LaunchedEffect(searchQuery) {
         filteredFilms = if (searchQuery.isEmpty()) {
             films
         } else {
             films.filter { film ->
-                film.title.contains(searchQuery, ignoreCase = true) ||
-                        film.director.contains(searchQuery, ignoreCase = true) ||
-                        film.description.contains(searchQuery, ignoreCase = true) ||
-                        film.releaseDate.contains(searchQuery, ignoreCase = true)
+                val query = searchQuery.trim()
+                film.title.startsWith(query, ignoreCase = true) ||
+                        film.originalTitle.startsWith(query, ignoreCase = true) ||
+                        film.director.startsWith(query, ignoreCase = true)
             }
         }
     }
@@ -124,7 +124,7 @@ fun SearchScreen(
             Surface(
                 modifier = Modifier.fillMaxWidth(),
 
-            ) {
+                ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -151,8 +151,6 @@ fun SearchScreen(
                             Text(
                                 stringResource(R.string.search_placeholder),
                                 color = Color.Black
-
-
                             )
                         },
                         leadingIcon = {
@@ -167,7 +165,8 @@ fun SearchScreen(
                                 Icon(
                                     Icons.Default.Close,
                                     contentDescription = "Clear",
-                                    tint = NetflixLightGray,
+                                    tint = Color.Unspecified,
+
                                     modifier = Modifier.clickable {
                                         searchQuery = ""
                                     }

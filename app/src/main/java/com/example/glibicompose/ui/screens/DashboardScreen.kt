@@ -375,37 +375,13 @@ fun FeaturedFilmSection(film: GhibliFilm, onClick: () -> Unit) {
                 Button(
                     onClick = onClick,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.White
-                    ),
-                    shape = RoundedCornerShape(4.dp),
-                    modifier = Modifier.height(48.dp)
-                ) {
-                    Icon(
-                        Icons.Default.PlayArrow,
-                        contentDescription = null,
-                        tint = NetflixBlack,
-                        modifier = Modifier.size(24.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = stringResource(id = R.string.play_ghibli),
-                        color = NetflixBlack,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
-
-
-                    Button(
-                    onClick = onClick,
-                    colors = ButtonDefaults.buttonColors(
                         containerColor = NetflixDarkGray.copy(alpha = 0.8f)
                     ),
                     shape = RoundedCornerShape(4.dp),
                     modifier = Modifier.height(48.dp)
                 ) {
                     Text(
-                        text = stringResource(id= R.string.more_info),
+                        text = stringResource(id = R.string.more_info),
                         color = Color.White,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold
@@ -415,6 +391,7 @@ fun FeaturedFilmSection(film: GhibliFilm, onClick: () -> Unit) {
         }
     }
 }
+
 
 @Composable
 fun FilmRowSection(

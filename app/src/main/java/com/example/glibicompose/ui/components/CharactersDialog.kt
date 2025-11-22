@@ -47,7 +47,7 @@ fun CharactersDialog(
                 .fillMaxHeight(0.88f),
             shape = RoundedCornerShape(24.dp),
             elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White)
+//            colors = CardDefaults.cardColors(containerColor = Color.White)
         ) {
             Column(
                 modifier = Modifier.fillMaxSize()
@@ -107,7 +107,6 @@ fun CharactersDialog(
                                 verticalArrangement = Arrangement.spacedBy(20.dp)
                             ) {
                                 CircularProgressIndicator(
-                                    color = Color(0xFF003153),
                                     strokeWidth = 4.dp,
                                     modifier = Modifier.size(48.dp)
                                 )
@@ -129,7 +128,7 @@ fun CharactersDialog(
                         ) {
                             Surface(
                                 shape = RoundedCornerShape(12.dp),
-                                color = Color(0xFFFFEBEE),
+//                                color = Color(0xFFFFEBEE),
                                 modifier = Modifier.fillMaxWidth()
                             ) {
                                 Column(
@@ -183,7 +182,7 @@ fun CharactersDialog(
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .background(Color(0xFFF8F9FA))
+//                                .background(Color(0xFFF8F9FA))
                         ) {
                             LazyColumn(
                                 modifier = Modifier.fillMaxSize(),
