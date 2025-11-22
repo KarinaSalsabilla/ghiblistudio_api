@@ -11,9 +11,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import com.example.glibicompose.ui.screens.SearchScreen
+import com.example.glibicompose.ui.screens.DashboardScreen
 import com.example.glibicompose.ui.theme.GlibiComposeTheme
-import com.example.glibicompose.SplashScreen
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,7 +22,6 @@ class MainActivity : ComponentActivity() {
             GlibiComposeTheme {
                 var currentScreen by rememberSaveable { mutableStateOf("splash") }
 
-
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -30,19 +29,19 @@ class MainActivity : ComponentActivity() {
                     when (currentScreen) {
                         "splash" -> SplashScreen(
                             onNavigateToSearch = {
-                                currentScreen = "search"
+                                currentScreen = "dashboard"
                             }
                         )
-                        "search" -> SearchScreen()
+                        "dashboard" -> DashboardScreen()
                     }
                 }
             }
         }
     }
+
     // Handle configuration changes tanpa restart
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         // Activity tidak akan di-recreate saat theme berubah
     }
 }
-

@@ -5,5 +5,59 @@
     <string name="start_adventure">Mulai Petualangan</string>
     <string name="explore_collection">Jelajahi koleksi film Studio Ghibli</string>
     <string name="film_cover">Sampul Film Ghibli</string>
+
+    <!-- Search Screen -->
+    <string name="explore_magical_films">Jelajahi film animasi penuh keajaiban</string>
+    <string name="search_placeholder">Cari film</string>
+    <string name="films_found">%d film ditemukan</string>
+    <string name="loading_films">Memuat film…</string>
+    <string name="error_loading">Gagal memuat data: %s</string>
+    <string name="no_films">Tidak ada film tersedia</string>
+    <string name="minutes">menit</string>
+
+    <!-- Film Detail -->
+    <string name="director">Sutradara</string>
+    <string name="release_year">Tahun Rilis</string>
+    <string name="running_time">Durasi</string>
+    <string name="rating">Rating</string>
+    <string name="synopsis">Sinopsis</string>
+    <string name="back">Kembali</string>
+
+    <!-- Dashboard Screen -->
+    <string name="play_ghibli">Putar</string>
+    <string name="more_info">Detail</string>
+    <string name="Top_rated">Film dengan rating tertingggi</string>
+    <string name="hayao">Koleksi Hayao Miyazaki</string>
+    <string name="rilis">Rilis terbaru</string>
+    <string name="all">Semua film Studio Ghibli</string>
+
+    <string name="no_results">Tidak ada hasil untuk "%s"</string>
+    <string name="try_different_keywords">Coba kata kunci lain</string>
+
+<!--    !&#45;&#45;    Filmdetail&ndash;&gt;-->
+    <string name="detail">Detail film</string>
+    <string name="rate">Rating</string>
+    <string name="year">Tahun</string>
+    <string name="durasi">Durasi</string>
+    <string name="sutradara">Sutradara</string>
+    <string name="lihatkarakter">Lihat karakter</string>
+
+<!--    card dialog-->
+    <string name="loading_characters">Memuat karakter…</string>
+    <string name="no_characters">Tidak ada karakter</string>
+    <string name="film_characters">Karakter film</string>
+    <string name="eyes">Mata</string>
+    <string name="gender">Jenis kelamin</string>
+    <string name="hair">Rambut</string>
+    <string name="age">Usia</string>
+
+
+
+    <plurals name="results_count">
+        <item quantity="one">%d hasil</item>
+        <item quantity="other">%d hasil</item>
+    </plurals>
+
+
 </resources>
 

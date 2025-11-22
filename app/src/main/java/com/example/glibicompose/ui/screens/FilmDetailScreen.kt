@@ -31,9 +31,12 @@ import com.example.glibicompose.data.GhibliFilm
 import com.example.glibicompose.ui.components.CharactersDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import com.example.glibicompose.R
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import java.net.URL
+import androidx.compose.ui.res.stringResource
+
 
 private val PrimaryBlue = Color(0xFF1E398A)
 private val SecondaryBlue = Color(0xFF5289CB)
@@ -64,7 +67,7 @@ fun FilmDetailScreen(
                 TopAppBar(
                     title = {
                         Text(
-                            "Detail Film",
+                            text = stringResource(id= R.string.detail),
                             fontWeight = FontWeight.SemiBold
                         )
                     },
@@ -163,7 +166,7 @@ fun FilmDetailScreen(
                         StatCard(
                             icon = Icons.Default.Star,
                             value = if (film.rtScore.isNotEmpty()) film.rtScore else "N/A",
-                            label = "Rating",
+                            label = stringResource(R.string.rate),
                             iconTint = Color(0xFFFFB800),
                             modifier = Modifier.weight(1f)
                         )
@@ -171,7 +174,7 @@ fun FilmDetailScreen(
                         StatCard(
                             icon = Icons.Outlined.DateRange,
                             value = film.releaseDate,
-                            label = "Year",
+                            label = stringResource(R.string.year),
                             iconTint = Color(0xFF003153),
                             modifier = Modifier.weight(1f)
                         )
@@ -179,7 +182,7 @@ fun FilmDetailScreen(
                         StatCard(
                             icon = Icons.Default.AccessTime,
                             value = if (film.runningTime.isNotEmpty()) "${film.runningTime}m" else "N/A",
-                            label = "Duration",
+                            label = stringResource(R.string.durasi),
                             iconTint = Color(0xFF003153),
                             modifier = Modifier.weight(1f)
                         )
@@ -222,7 +225,7 @@ fun FilmDetailScreen(
 
                             Column {
                                 Text(
-                                    text = "Director",
+                                    text = stringResource(R.string.director),
                                     fontSize = 12.sp,
                                     color = Color.Gray,
                                     fontWeight = FontWeight.Medium,
@@ -242,10 +245,9 @@ fun FilmDetailScreen(
                     Spacer(modifier = Modifier.height(28.dp))
 
                     Text(
-                        text = "Synopsis",
+                        text = stringResource(R.string.synopsis),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF1A1A1A),
                         letterSpacing = 0.3.sp
                     )
 
@@ -318,9 +320,6 @@ fun FilmDetailScreen(
                             .fillMaxWidth()
                             .height(56.dp),
                         shape = RoundedCornerShape(14.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF003153)
-                        ),
                         elevation = ButtonDefaults.buttonElevation(
                             defaultElevation = 0.dp
                         )
@@ -332,10 +331,9 @@ fun FilmDetailScreen(
                         )
                         Spacer(modifier = Modifier.width(10.dp))
                         Text(
-                            text = "View Characters",
+                            text = stringResource(R.string.lihatkarakter),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.SemiBold,
-                            color = Color.White,
                             letterSpacing = 0.3.sp
                         )
                     }
