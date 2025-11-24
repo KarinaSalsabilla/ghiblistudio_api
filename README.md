@@ -1,3 +1,19 @@
+# 🎬 Ghibli App  
+Aplikasi Android yang menampilkan daftar film, detail film, dan karakter Studio Ghibli.  
+Mendukung mode terang/gelap dan bahasa Indonesia & Inggris.
+
+---
+
+## ✨ Features  
+- 🌞🌙 Mode Terang & Gelap / Light & Dark Mode  
+- 📌 Dashboard Film / Film Dashboard  
+- 🎬 Detail Film / Movie Details  
+- 👤 Detail Karakter / Character Details  
+- 🔍 Pencarian Film & Karakter / Film & Character Search  
+- 🌐 Dukungan Dua Bahasa (Indonesia & English) / Dual Language Support (ID & EN)
+
+---
+
 ## 📱 Screenshots
 
 # 🌞 Light Mode
